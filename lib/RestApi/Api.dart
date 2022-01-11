@@ -2,6 +2,11 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class Api {
+
+
+  // Burada elle firebase'den bildirim göndermek yerine http kullanarak firebase'den bana notification
+  // göndermesini istedim.
+
   final HttpClient httpClient = HttpClient();
   final String fcmUrl = 'https://fcm.googleapis.com/fcm/send';
   final fcmKey = "AAAAmp0cYq0:APA91bFDEh6-R1Eftt5V0upKHsnmK2g7xvmV4-JUUAFsbHF0V42b0-mSTflcpN2WET4opLtOtTwySP_WS9n3qxIjCAej3Fr_86AwxMw8ZgzjhSwcIUU-vGVqKcUs58aIOx1aI1bYX9Of";

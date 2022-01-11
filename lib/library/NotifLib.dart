@@ -9,12 +9,14 @@ import 'package:notify56/main.dart';
 
 
 
-// Uygulama hangi platformda çalışıyorsa onu geri döner. Android-IOS-noPlatform gibi.
 
 class NotifLib{
+
+
+  // Uygulama arka planda iken bu fonksiyonda handler edilir.
+  // Eğer background'da diğer firebase servislerini kullanacaksanız initial etmeyi unutmayın!!
+
   Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  // If you're going to use other Firebase services in the background, such as Firestore,
-  // make sure you call `initializeApp` before using other Firebase services.
   await Firebase.initializeApp();
   print('Handling a background message ${message.messageId!}');
   print("mesaj background'a geldi");
@@ -25,6 +27,9 @@ class NotifLib{
 }
 
 //------------------------------------------------------------------------
+
+// Bütün bildirimler bir channel'a atanmalıdır. Aksi takdirde notification uygulamada gözükmez. 
+
 createChannel(){
  AndroidNotificationChannel channel= AndroidNotificationChannel('high_importance_channel',
     'High Importance Notification',
@@ -35,12 +40,19 @@ createChannel(){
 }
 //------------------------------------------------------------------------
 
+// getWidgetBinding methodu= Firebase'i kullanmak için yerel kodu çağırmamız gerekiyor.
+// burada bu işlemi yaptık.
+
 dynamic getWidgetBinding(){
 
   return WidgetsFlutterBinding.ensureInitialized();
 
 }
 //------------------------------------------------------------------------
+
+// Firebase initial etmek için gerekli opsiyonlar var.
+// Bunlar apiKey,appId gibi Stringler.
+// Firebase'de oluşturduğumuz application'ın gerekli bilgilerini burada veriyoruz.
 
 Future<dynamic> getInitialize (String apiKey,
 String appId,String messagingSenderId,String projectId)async{
@@ -52,7 +64,12 @@ String appId,String messagingSenderId,String projectId)async{
   return Firebase.initializeApp(options: options);
 
 }
+
+
+
 //------------------------------------------------------------------------
+
+// Android için farklı settingler,ios için farklı settings tanımladık.
 
 createSettings(){
   final android=AndroidInitializationSettings("@mipmap/ic_launcher");
@@ -65,19 +82,13 @@ createSettings(){
 
 //------------------------------------------------------------------------
 
+// Artık oluşturduğum messageListen methodu ile notification'ı local notification ile
+//// görebileceğim. 
+
   Future<void> messageListen(String apiKey,String appId,String messagingSenderId,String projectId)async{
 
-    
-  //await  _firebaseMessagingBackgroundHandler(message);
-  
-  
-  
   getWidgetBinding();
   getInitialize(apiKey,appId,messagingSenderId,projectId);
-
-  
-
-  
 
   final settings=createSettings();
   final channel=createChannel();
